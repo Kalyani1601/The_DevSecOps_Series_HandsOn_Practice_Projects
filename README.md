@@ -1,0 +1,2 @@
+# The_DevSecOps_Series_HandsOn_Practice_Projects
+DevSecops Training
