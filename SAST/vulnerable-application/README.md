@@ -149,7 +149,7 @@ The project is already configured for SonarQube in the `build.gradle` file. Upda
 sonarqube {
     properties {
         property 'sonar.host.url', 'http://localhost:9000'
-        property 'sonar.login', 'your-sonar-token'
+    //    property 'sonar.login', 'your-sonar-token'
     }
 }
 ```

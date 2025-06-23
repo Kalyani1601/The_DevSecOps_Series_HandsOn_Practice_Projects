@@ -71,8 +71,11 @@ public class UserController {
         // Vulnerability: Setting insecure cookies
         Cookie cookie = new Cookie("auth", username + ":" + password);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
         // Vulnerability: Missing secure and httpOnly flags
-        response.addCookie(cookie);
+        //response.addCookie(cookie);
+        cookie.setSecure(true);
         return ResponseEntity.ok("Logged in");
     }
     
