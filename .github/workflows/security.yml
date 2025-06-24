@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run PMD (Gradle)
+        working-directory: SAST/vulnerable-application
         run: ./gradlew pmdMain pmdTest
 
       - uses: returntocorp/semgrep-action@v1
