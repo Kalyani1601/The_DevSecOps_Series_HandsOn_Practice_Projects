@@ -44,7 +44,7 @@ jobs:
 
      # ✅ Snyk (Dependency Scanner)
       - name: Set up Snyk
-        uses: snyk/actions/setup@v1.2.0
+        uses: snyk/actions/setup@master
 
       - name: Run Snyk to check for vulnerabilities
         run: snyk test --all-projects
