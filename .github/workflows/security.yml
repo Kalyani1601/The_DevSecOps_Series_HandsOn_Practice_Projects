@@ -15,12 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Download PMD
+        run: |
+          curl -L -o pmd.zip https://github.com/pmd/pmd/releases/latest/download/pmd-bin.zip
+          unzip pmd.zip -d pmd
+          mv pmd/pmd-bin-* pmd-bin
 
-      - name: Run PMD (Gradle)
-        working-directory: SAST/vulnerable-application
-        run: ./gradlew pmdMain pmdTest
+      - name: Run PMD
+        run: |
+          ./pmd-bin/bin/run.sh pmd \
+            -d SCA/vulnerable-application/src \
+            -R category/java/bestpractices.xml \
+            -f html \
+            -r pmd-report.html
+
+      - name: Upload PMD Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmd-report
+          path: pmd-report.html
 
       - uses: returntocorp/semgrep-action@v1
         with:
