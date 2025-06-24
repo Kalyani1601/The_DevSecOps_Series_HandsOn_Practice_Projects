@@ -18,7 +18,7 @@ jobs:
       - name: Run TruffleHog v3
         run: |
           docker run --rm -v ${{ github.workspace }}:SCA/vulnerable-application/ ghcr.io/trufflesecurity/trufflehog:latest \
-          filesystem --directory SCA/vulnerable-application/ --only-verified --json > trufflehog-results.json
+          filesystem --directory /SCA/vulnerable-application/ --only-verified --json > trufflehog-results.json
 
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4
