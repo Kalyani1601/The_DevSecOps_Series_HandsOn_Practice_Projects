@@ -21,7 +21,7 @@ jobs:
           unzip pmd.zip -d pmd
           mv pmd/pmd-bin-6.55.0 pmd-bin
 
-
+     # ✅ PMD (Code lint, code quality)
       - name: Run PMD
         run: |
           ./pmd-bin/bin/run.sh pmd \
@@ -36,9 +36,30 @@ jobs:
         with:
           name: pmd-report
           path: pmd-report.html
-
+     # ✅ Semgrep (SAST)
       - uses: returntocorp/semgrep-action@v1
         with:
           config: "p/default"
         continue-on-error: true
 
+     # ✅ Snyk (Dependency Scanner)
+      - name: Set up Snyk
+        uses: snyk/actions/setup@v1
+
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk test --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
+      # ✅ TruffleHog (Secrets Scanner)
+      - name: Run TruffleHog
+        run: |
+          pip install trufflehog
+          trufflehog filesystem --directory . --only-verified --json > trufflehog-results.json
+        continue-on-error: true
+
+      - name: Upload TruffleHog Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trufflehog-results
+          path: trufflehog-results.json
