@@ -15,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: Run PMD (Gradle)
         working-directory: SAST/vulnerable-application
         run: ./gradlew pmdMain pmdTest
