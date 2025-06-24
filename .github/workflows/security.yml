@@ -15,11 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # ✅ TruffleHog (Secrets Scanner)
-      - name: Run TruffleHog
+      - name: Run TruffleHog v3
         run: |
-          pip install trufflehog
-          trufflehog filesystem --directory . --only-verified --json > trufflehog-results.json
-        continue-on-error: true
+          docker run --rm -v ${{ github.workspace }}:/repo ghcr.io/trufflesecurity/trufflehog:latest \
+          filesystem --directory /repo --only-verified --json > trufflehog-results.json
 
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4
