@@ -14,25 +14,37 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      # ✅ TruffleHog (Secrets Scanner)
-      - name: Run TruffleHog v3
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/SCA/vulnerable-application/ ghcr.io/trufflesecurity/trufflehog:latest \
-          filesystem --directory /SCA/vulnerable-application/ --only-verified --json > trufflehog-results.json
+      # # ✅ TruffleHog (Secrets Scanner)
+      # - name: Run TruffleHog v3
+      #   run: |
+      #     docker run --rm -v ${{ github.workspace }}:/SCA/vulnerable-application/ ghcr.io/trufflesecurity/trufflehog:latest \
+      #     filesystem --directory /SCA/vulnerable-application/ --only-verified --json > trufflehog-results.json
 
-      - name: Upload TruffleHog Report
+      # - name: Upload TruffleHog Report
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: trufflehog-results
+      #     path: trufflehog-results.json
+
+      - name: 🔍 Run Gitleaks Secret Scan
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: detect --source=. --report-format sarif --report-path=gitleaks.sarif
+        continue-on-error: true
+      - name: Upload Gitleaks Report
         uses: actions/upload-artifact@v4
         with:
-          name: trufflehog-results
-          path: trufflehog-results.json
+          name: gitleaks-report
+          path: gitleaks.sarif
+
 
      # ✅ Snyk (Dependency Scanner)
       - name: Set up Snyk
         uses: snyk/actions/setup@master
 
       - name: Run Snyk to check for vulnerabilities
-        run: snyk test --file=SCA/vulnerable-application/build.gradle
-        working-directory: SCA/vulnerable-application
+        run: snyk test --file=./SCA/vulnerable-application/build.gradle
+      #  working-directory: SCA/vulnerable-application
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
