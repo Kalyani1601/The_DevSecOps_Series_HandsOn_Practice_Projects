@@ -64,3 +64,13 @@ sonarqube {
      //   property 'sonar.login', 'squ_73e293c0629f1e4df846fb1c34bf9ac4b5054ae4'
     }
 }
+
+plugins {
+    id 'pmd'
+}
+
+pmd {
+    toolVersion = '6.55.0'
+    ruleSetFiles = files("config/pmd/ruleset.xml") // Optional custom rules
+    ruleSets = []  // Don't use built-in if custom
+}

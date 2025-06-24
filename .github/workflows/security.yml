@@ -16,7 +16,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Run PMD (Gradle)
+        run: ./gradlew pmdMain pmdTest
 
       - uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/default" 
+          config: "p/default"
+

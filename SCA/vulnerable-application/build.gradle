@@ -78,3 +78,14 @@ dependencyCheck {
         nodeEnabled = false  // Disable Node.js analyzer if not needed
     }
 }
+
+plugins {
+    id 'pmd'
+}
+
+pmd {
+    toolVersion = '6.55.0'
+    ruleSetFiles = files("config/pmd/ruleset.xml") // Optional custom rules
+    ruleSets = []  // Don't use built-in if custom
+}
+
