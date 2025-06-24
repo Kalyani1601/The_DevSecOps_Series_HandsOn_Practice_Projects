@@ -1,12 +1,11 @@
 name: "Pipeline"
-trigger:
-  branches:
-    include:
+on:
+  push:
+    branches:
       - main
-pr:
-  branches:
-    include:
-      - master
+  pull_request:
+    branches:
+      - main
 on:
   workflow_dispatch:
 
@@ -16,7 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Run PMD (Gradle)
         run: ./gradlew pmdMain pmdTest
 
