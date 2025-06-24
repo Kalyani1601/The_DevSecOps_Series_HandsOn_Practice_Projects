@@ -1,5 +1,12 @@
-name: "Semgrep SAST"
-
+name: "Pipeline"
+trigger:
+  branches:
+    include:
+      - main
+pr:
+  branches:
+    include:
+      - master
 on:
   workflow_dispatch:
 
@@ -12,4 +19,4 @@ jobs:
 
       - uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/default"  # Or your custom ruleset
+          config: "p/default" 
