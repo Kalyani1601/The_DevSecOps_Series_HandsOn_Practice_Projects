@@ -31,8 +31,7 @@ jobs:
         uses: snyk/actions/setup@master
 
       - name: Run Snyk to check for vulnerabilities
-        run: snyk test --all-projects
-        working-directory: SCA/vulnerable-application
+        run: snyk test --file=SCA/vulnerable-application/build.gradle --project-name=my-gradle-project
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
@@ -58,6 +57,7 @@ jobs:
         with:
           name: pmd-report
           path: pmd-report.html
+
      # ✅ Semgrep (SAST)
       - uses: returntocorp/semgrep-action@v1
         with:
