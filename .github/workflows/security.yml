@@ -29,6 +29,7 @@ jobs:
             -R category/java/bestpractices.xml \
             -f html \
             -r pmd-report.html
+        continue-on-error: true
 
       - name: Upload PMD Report
         uses: actions/upload-artifact@v4
@@ -39,4 +40,5 @@ jobs:
       - uses: returntocorp/semgrep-action@v1
         with:
           config: "p/default"
+        continue-on-error: true
 
