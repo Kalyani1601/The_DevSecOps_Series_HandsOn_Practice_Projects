@@ -8,7 +8,6 @@ services:
       - sonarqube
   
   sonarqube:
-    read_only: true
     image: sonarqube:lts
     ports:
       - "9000:9000"

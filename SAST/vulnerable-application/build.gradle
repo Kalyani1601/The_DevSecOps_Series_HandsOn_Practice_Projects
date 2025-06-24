@@ -61,7 +61,7 @@ sonarqube {
         property 'sonar.java.binaries', 'build/classes'
         property 'sonar.java.coveragePlugin', 'jacoco'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
-     //   property 'sonar.login', 'squ_73e293c0629f1e4df846fb1c34bf9ac4b5054ae4'
+        property 'sonar.login', 'squ_73e293c0629f1e4df846fb1c34bf9ac4b5054ae4'
     }
 }
 
