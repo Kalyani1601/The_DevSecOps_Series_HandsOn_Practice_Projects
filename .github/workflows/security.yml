@@ -14,6 +14,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # ✅ TruffleHog (Secrets Scanner)
+      - name: Run TruffleHog
+        run: |
+          pip install trufflehog
+          trufflehog filesystem --directory . --only-verified --json > trufflehog-results.json
+        continue-on-error: true
+
+      - name: Upload TruffleHog Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trufflehog-results
+          path: trufflehog-results.json
+
+     # ✅ Snyk (Dependency Scanner)
+      - name: Set up Snyk
+        uses: snyk/actions/setup@master
+
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk test --all-projects
+        working-directory: SCA/vulnerable-application
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
 
       - name: Download PMD
         run: |
@@ -42,24 +65,4 @@ jobs:
           config: "p/default"
         continue-on-error: true
 
-     # ✅ Snyk (Dependency Scanner)
-      - name: Set up Snyk
-        uses: snyk/actions/setup@master
 
-      - name: Run Snyk to check for vulnerabilities
-        run: snyk test --all-projects
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      
-      # ✅ TruffleHog (Secrets Scanner)
-      - name: Run TruffleHog
-        run: |
-          pip install trufflehog
-          trufflehog filesystem --directory . --only-verified --json > trufflehog-results.json
-        continue-on-error: true
-
-      - name: Upload TruffleHog Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: trufflehog-results
-          path: trufflehog-results.json
